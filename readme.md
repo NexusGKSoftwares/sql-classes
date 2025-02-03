@@ -1,7 +1,7 @@
 Introduction to SQL & Relational Databases
 
 What is SQL?
-================ ====
+------
 SQL (Structured Query Language) is a programming language 
 designed for managing and manipulating data stored in relational databases
 It is used to perform various operations such as creating, modifying, and querying database tables.
