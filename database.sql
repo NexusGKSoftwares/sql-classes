@@ -164,5 +164,122 @@ SELECT * FROM employees FULL OUTER JOIN departments ON employees.department = de
 -- UNION is used to combine the result-set of two or more SELECT statements while JOIN is used to combine rows from two or more tables based on a related column between them.
 -- UNION removes duplicate rows while JOIN does not remove duplicate rows.
 
+-- building relationships between tables
+-- 1. one-to-one (1:1) relationship
+-- 2. one-to-many (1:N) relationship
+-- 3. many-to-many (M:N) relationship
 
 
+-- one to one relationship
+-- example of one-to-one relationship
+CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255)
+    );
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+    );
+-- in this example, one customer can have one order, and one order is associated with one customer
+
+--  one to many relationship
+-- example of one-to-many relationship
+CREATE TABLE customers (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255)
+    );
+CREATE TABLE orders (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+    );
+    
+CREATE TABLE products (
+    id INT PRIMARY KEY,
+    customer_id INT,
+    FOREIGN KEY (customer_id) REFERENCES customers(id)
+    );
+
+-- in this example, one customer can have many orders, and many products can be associated with one customer
+
+-- many to many relationship
+-- example of many-to-many relationship
+-- lets consider a student and courses relationships where:
+-- one student can enroll in many courses and one course can be enrolled by many students
+CREATE TABLE students (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    email VARCHAR(255)
+    );
+CREATE TABLE courses (
+    id INT PRIMARY KEY,
+    name VARCHAR(255),
+    description VARCHAR(255)
+    );
+CREATE TABLE enrollments (
+    id INT PRIMARY KEY,
+    student_id INT,
+    course_id INT,
+    FOREIGN KEY (student_id) REFERENCES students(id),
+    FOREIGN KEY (course_id) REFERENCES courses(id)
+    );
+
+--  insert sample large dataset
+INSERT INTO students (id, name, email) VALUES
+(1, 'John Doe', 'john.doe@example.com'),
+(2, 'Jane Doe', 'jane.doe@example.com'),
+(3, 'John Smith', 'john.smith@example.com'),
+(4, 'Jane Smith', 'jane.smith@example.com'),
+(5, 'John Johnson', 'john.johnson@example.com'),
+(6, 'Jane Johnson', 'jane.johnson@example.com'),
+(7, 'John Williams', 'john.williams@example.com'),
+(8, 'Jane Williams', 'jane.williams@example.com'),
+(9, 'John Davis', 'john.davis@example.com'),
+(10, 'Jane Davis', 'jane.davis@example.com')
+
+INSERT INTO courses (id, name, description) VALUES
+(1, 'Math', 'Math course'),
+(2, 'Science', 'Science course'),
+(3, 'History', 'History course'),
+(4, 'English', 'English course'),
+(5, 'Geography', 'Geography course'),
+(6, 'Biology', 'Biology course'),
+(7, 'Chemistry', 'Chemistry course'),
+(8, 'Physics', 'Physics course'),
+(9, 'Computer Science', 'Computer Science course'),
+(10, 'Economics', 'Economics course')
+
+INSERT INTO enrollments (id, student_id, course_id) VALUES
+(1, 1, 1),
+(2, 1, 2),
+(3, 2, 1),
+(4, 2, 3),
+(5, 3, 2),
+(6, 3, 4),
+(7, 4, 1),
+(8, 4, 5),
+(9, 5, 3),
+(10, 5, 6),
+(11, 6, 4),
+(12, 6, 7),
+(13, 7, 5),
+(14, 7, 8),
+(15, 8, 6);
+
+
+
+-- querying this data 
+-- to get all the courses a student is enrolled in
+SELECT c.name FROM enrollments e
+JOIN courses c ON e.course_id = c.id
+WHERE e.student_id = 1;
+-- to get all the students enrolled in a course
+SELECT s.name FROM enrollments e
+JOIN students s ON e.student_id = s.id
+WHERE e.course_id = 1;
+
+
+-- in this example , one student can enroll in many courses and one course can be enrolled by many students
